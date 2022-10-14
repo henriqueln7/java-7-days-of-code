@@ -1,26 +1,27 @@
 package com.br.alura;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.http.*;
+import com.br.alura.api.ClientApiAdapter;
+import com.br.alura.api.YodaTranslate;
+import com.br.alura.api.RandomAdvice;
+import com.br.alura.api.RickAndMortyJaphethsMiddleSon;
 
-import static java.net.http.HttpRequest.newBuilder;
-import static java.text.MessageFormat.format;
+import java.net.URISyntaxException;
 
 public class Main {
+        public static void main(String[] args) throws URISyntaxException {
+            YodaTranslate yodaTranslate = new YodaTranslate();
+            new ClientApiAdapter(yodaTranslate);
 
-    public static final String IMDB_TOP_250_MOVIES_ENDPOINT = "https://imdb-api.com/en/API/Top250Movies/{0}";
+            yodaTranslate.get();
 
-    public static void main(String[] args) throws URISyntaxException {
-        String apiKey = System.getenv("API_KEY");
-        HttpClient httpClient = HttpClient.newHttpClient();
+            RandomAdvice randomAdvice = new RandomAdvice();
+            new ClientApiAdapter(randomAdvice);
 
-        HttpRequest httpRequest = newBuilder(new URI(format(IMDB_TOP_250_MOVIES_ENDPOINT, apiKey))).GET().build();
+            randomAdvice.get();
 
-        httpClient.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
-                  .thenApply(HttpResponse::body)
-                  .thenAccept(System.out::println)
-                  .join();
+            RickAndMortyJaphethsMiddleSon rickAndMortyJaphethsMiddleSon = new RickAndMortyJaphethsMiddleSon();
+            new ClientApiAdapter(rickAndMortyJaphethsMiddleSon);
 
+            rickAndMortyJaphethsMiddleSon.get();
     }
 }
